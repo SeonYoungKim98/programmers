@@ -1,39 +1,53 @@
-import java.util.ArrayList;
-
+import java.util.*;
 
 class Solution {
     public int[] solution(int[] answers) {
-        int[] answer = {};
         
         int[] user1 = {1, 2, 3, 4, 5};
-        int[] user2 = {2, 1, 2, 3, 2, 4, 2, 5};
+        int[] user2 = { 2, 1, 2, 3, 2, 4, 2, 5};
         int[] user3 = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
         
-        int[] user_sol = {0, 0, 0};
+        int g1 = 0;
+        int g2 = 0;
+        int g3 = 0;
         
-        for(int i = 0; i < answers.length; i++){
-            if(answers[i%5] == user1[i]){
-                user_sol[0]++;
-            }if(answers[i%8] == user2[i]){
-                user_sol[1]++;
-            }if(answers[i%10] == user3[i]){
-                user_sol[2]++;
+        for(int i = 0 ; i < answers.length; i++){
+            if(user1[i%5] == answers[i]){
+                g1 += 1;
+            }
+            if(user2[i%8] == answers[i]){
+                g2 += 1;
+            }
+            if(user3[i%10] == answers[i]){
+                g3 += 1;
             }
         }
         
-        int max_score = Math.max(Math.max(user_sol[0], user_sol[1]), user_sol[2]);
+        ArrayList<Integer> list = new ArrayList<>();
         
-        ArrayList<Integer> list = new ArrayList<Integer>();
+        int max_grade = Integer.max(g1,g2);
+        max_grade = Integer.max(max_grade, g3); //가장 큰 점수 구해주기
         
-        if(max_score == user_sol[0]) list.add(1);
-        if(max_score == user_sol[1]) list.add(2);
-        if(max_score == user_sol[2]) list.add(3);
-        
-        answer = new int[ list.size()];
-        for( int i=0; i<list.size(); i++){
-            answer[i] = list.get(i);
+        //중복되는 사람들 추가해주기
+        if(max_grade == g1){
+            list.add(1);
+        }
+        if(max_grade == g2){
+            list.add(2);
+        }
+        if(max_grade == g3){
+            list.add(3);
         }
         
-        return answer;
+        Collections.sort(list); //중복되는 score의 사람들 정렬해주기
+        
+        
+        int[] numList = new int[list.size()];
+        
+        for(int i = 0 ; i < list.size(); i++){
+            numList[i] = list.get(i);
+        }
+        
+        return numList;
     }
 }
